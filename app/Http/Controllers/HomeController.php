@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -22,7 +23,12 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        return view('home');
+    {
+		$user = User::where('role_type','0')->get();
+        return view('home',compact('user'));
     }
+	
+	public function userList(){
+		//return view('home');
+	}
 }

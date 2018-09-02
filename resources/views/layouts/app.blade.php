@@ -12,6 +12,35 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+	<style>
+#map-canvas 
+{ 
+height: 400px; 
+width: 500px;
+
+}
+table {
+    width:100%;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+   background-color: #fff;
+}
+table#t01 th {
+ 
+    color: black;
+}
+</style>
 </head>
 <body>
     <div id="app">
@@ -52,7 +81,20 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
+									@if(Auth::user()->role_type == 1)
+										<li>
+											<a href="{{ url('home/userList') }}">
+												User List
+											</a>
+										</li>
+									@endif
+									
+									<li>
+                                        <a href="#">
+                                            Profile
+                                        </a>
+                                    </li>
+									<li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -75,6 +117,35 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="http://code.jquery.com/jquery-1.7.js"></script>
+	<script src="{{ asset('js/app.js') }}"></script>
+    
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDfDE3NIv0k-OhG6BiEsHt2kSBmRiOhE7g"></script>
+	<script>
+	function initialize() {
+    var myLatLng = new google.maps.LatLng( 50, 50 ),
+        myOptions = {
+            zoom: 4,
+            center: myLatLng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            },
+        map = new google.maps.Map( document.getElementById( 'map-canvas' ), myOptions ),
+        marker = new google.maps.Marker( {position: myLatLng, map: map} );
+
+    marker.setMap( map );
+    moveBus( map, marker );
+
+}
+
+function moveBus( map, marker ) {
+	
+    marker.setPosition( new google.maps.LatLng( 0, 0 ) );
+    map.panTo( new google.maps.LatLng( 0, 0 ) );
+
+};
+
+initialize();
+	setTimeout(function(){ $('#map-canvas').attr('style',''); }, 30);
+	</script>
 </body>
 </html>
